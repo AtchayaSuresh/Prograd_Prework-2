@@ -13,9 +13,9 @@ let Queen={
                   ["a2","b2","c2","d2","e2","f2","g2","h2"],
                   ["a1","b1","c1","d1","e1","f1","g1","h1"]],
     whereabouts:[],
+    whereaboutsIndex:0,
     changeDirection(direction){
         direction=direction.toUpperCase();
-        console.log(direction);
         if(direction=='S'||direction=='W'||direction=='E'||direction=='SW'||direction=='NE'||direction=='N'
         ||direction=='SE'||direction=='NW')
         {
@@ -26,7 +26,7 @@ let Queen={
         console.log("Invalid direction");
         return 0;}
     },
-    moveDirection(){
+    moveFoward(){
         for(index=0;index<Queen.direction.length;index++){
             switch(Queen.direction[index]){
                 case 'E':
@@ -67,17 +67,19 @@ let Queen={
     jumpMoveForward(steps){
         while(steps)
         {
-            if(Queen.moveDirection())
+            if(Queen.moveFoward())
             return 0;
             steps--;
         }
         return 1;
+    },
+    updatePosition(currPosition){
+        Queen.whereabouts[Queen.whereaboutsIndex++]=currPosition;
     }
 };
 function isCharacterALetter(str) {
     return (/[a-zA-Z]/).test(str)
   }
-flag=1
 do{
     dirsteps=prompt("Enter the direction with steps Eg:s2. The available directions are N,E,S,W,NE,NW,SE,SW . Enter exit to end");
     if(dirsteps=='exit')
@@ -97,14 +99,13 @@ do{
     if(steps=='')
     console.log("Invalid Input");
     else{
-        console.log(Queen.position.x_coordinate);
-        console.log(Queen.position.y_coordinate);
-        console.log(direction);
-        console.log(steps);
         curr_x_coordinate=Queen.position.x_coordinate;
         curr_y_coordinate=Queen.position.y_coordinate;
-        if(Queen.changeDirection(direction)==1&&Queen.jumpMoveForward(steps)==1)
-        console.log("Current position of Queen is "+Queen.positionlog[Queen.position.x_coordinate][Queen.position.y_coordinate]);
+        if(Queen.changeDirection(direction)==1&&Queen.jumpMoveForward(steps)==1){
+            currPosition=Queen.positionlog[Queen.position.x_coordinate][Queen.position.y_coordinate];
+            console.log("Current position of Queen is "+currPosition);
+            Queen.updatePosition(currPosition);
+        }
         else
         {
             Queen.position.x_coordinate=curr_x_coordinate;
